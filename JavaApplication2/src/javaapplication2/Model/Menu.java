@@ -14,7 +14,7 @@ import java.util.*;
  * @author randy
  */
 public class Menu {
-   long id, harga;
+   long id, harga, jumlah;
    String nama;
    public static String driver, database, user, password;
    public static Koneksi dbsetting;
@@ -23,6 +23,14 @@ public class Menu {
        this.id = Long.parseLong(id);
        this.harga = Long.parseLong(harga);
        this.nama = nama;
+       konek();
+   }
+   
+   public Menu(String id, String harga, String nama, String jumlah){
+       this.id = Long.parseLong(id);
+       this.harga = Long.parseLong(harga);
+       this.nama = nama;
+       this.jumlah = Long.parseLong(jumlah);
        konek();
    }
    
@@ -35,6 +43,10 @@ public class Menu {
    }
    
    public String toString(){
+       System.out.println("Jumlah : " + jumlah);
+       if(jumlah > 0){
+           return id + ". " + nama + " | " + harga + " x " +jumlah;
+       }
        return id + ". " + nama + " | " + harga;
    }
    
