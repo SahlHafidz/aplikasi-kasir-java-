@@ -18,9 +18,9 @@ import java.time.format.*;
  * @author 62813
  */
 public class Pesanan {
-    long id, subtotal, pelanggan_id;
-    String status;
-    LocalDate created_at, updated_at;
+    public long id, subtotal, pelanggan_id;
+    public String status;
+    public LocalDate created_at, updated_at;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
     public Pesanan(){
@@ -92,6 +92,16 @@ public class Pesanan {
         return this.updated_at.toString();
     }
     
+    public boolean selesai(){
+        boolean selesai = false;
+        if(status != null){
+            if(status.equals("selesai")){
+                selesai = true;
+            }
+        }
+        return selesai;
+    }
+    
     public String[] toTableRow(){
         String data[] = new String[9];
         Pelanggan pelanggan = this.pelanggan();
@@ -140,6 +150,9 @@ public class Pesanan {
                 pesanan.setId(res.getString(1));
                 pesanan.setSubtotal(res.getString(2));
                 pesanan.setPelangganId(res.getString(3));
+                pesanan.setStatus(res.getString(6));
+                pesanan.setCreatedAt(res.getString(4));
+                pesanan.setUpdatedAt(res.getString(5));
             }
             
             res.close();
@@ -164,11 +177,11 @@ public class Pesanan {
             
             
             String dateString = created_at;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate localDate = LocalDate.parse(dateString, formatter);
             System.out.println(localDate);
             
-            String SQL = "INSERT INTO pesanan (pelanggan_id, created_at, updated_at) VALUES ("+pelanggan_id+", "+localDate.toString()+", "+localDate.toString()+")";
+            String SQL = "INSERT INTO pesanan (subtotal, pelanggan_id, created_at, updated_at) VALUES (0, "+pelanggan_id+", '"+localDate.toString()+"', '"+localDate.toString()+"')";
             
             stt.execute(SQL);
             
@@ -186,8 +199,9 @@ public class Pesanan {
                     SQL = "INSERT INTO menu_pesanan (menu_id, pesanan_id) VALUES("+menu.id+" , "+pesanan_id+" );";
                     System.out.println(SQL);
                     stt.execute(SQL);
-                    subtotal += menu.harga * menu.jumlah;
                 }
+                subtotal += menu.harga * menu.jumlah;
+
             }
             
             SQL = "UPDATE pesanan SET subtotal = "+ String.valueOf(subtotal) + " WHERE id = "+pesanan_id;
@@ -219,7 +233,11 @@ public class Pesanan {
         return pesanan;
     }
     
-    public void update(String subtotal, String status){
+    public void update(String pelanggan_id, List<Menu> list_menu, String created_at){
+        if(status != null && (status).equalsIgnoreCase("selesai")){
+            JOptionPane.showMessageDialog(null, "Pesanan selesai, tidak dapat diubah", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         KoneksiDatabase konek = new KoneksiDatabase();
         Pesanan pesanan = new Pesanan();
         try{
@@ -229,11 +247,64 @@ public class Pesanan {
             
             LocalDate currentDate = LocalDate.now();
             
-            String SQL = "UPDATED SET subtotal = "+subtotal+", status = '"+status+"', updated_at = '"+currentDate.toString()+"' WHERE id = "+id;
+            LocalDate localDate = LocalDate.parse(created_at, formatter);
+            System.out.println(localDate);
+            
+            
+            
+            long subtotal = 0;
+            String SQL = "DELETE FROM menu_pesanan WHERE menu_pesanan.pesanan_id = "+id;
+            System.err.println(SQL);
             stt.execute(SQL);
+            for(Menu menu: list_menu){
+                for(int i = 0; i < menu.jumlah; i++){
+                    SQL = "INSERT INTO menu_pesanan (menu_id, pesanan_id) VALUES("+menu.id+" , "+id+" );";
+                    System.out.println(SQL);
+                    stt.execute(SQL);
+                }
+                subtotal += menu.harga * menu.jumlah;
+            }
+            
+            SQL = "UPDATE pesanan SET subtotal = "+subtotal+", "
+                    + "pelanggan_id = "+pelanggan_id+", "
+                    + "updated_at = '"+currentDate.toString()+"', "
+                    + "created_at = '"+localDate.toString()+"' "
+                    + "WHERE id = "+id;
+            stt.execute(SQL);
+            
+            this.setSubtotal(String.valueOf(subtotal));
+            this.setPelangganId(pelanggan_id);
+            this.setUpdatedAt(currentDate.toString());
+            this.setCreatedAt(localDate.toString());
+            
+            stt.close();
+            kon.close();
             
             JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Info", JOptionPane.INFORMATION_MESSAGE);
             
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+    
+    public void update(String status){
+        if(status != null && (status).equalsIgnoreCase("selesai")){
+            JOptionPane.showMessageDialog(null, "Pesanan selesai, tidak dapat diubah", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        KoneksiDatabase konek = new KoneksiDatabase();
+        try{
+            Class.forName(konek.driver);
+            Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
+            Statement stt = kon.createStatement();
+            String SQL = "UPDATE pesanan SET status = '"+status+"' WHERE id = " + id;
+            stt.execute(SQL);
+            this.setStatus(status);
+            JOptionPane.showMessageDialog(null,"Status pesanan berhasil diubah", "Info", JOptionPane.INFORMATION_MESSAGE);
+            stt.close();
+            kon.close();
         }catch(Exception e){
             System.err.println(e.getMessage());
             JOptionPane.showMessageDialog(null, e.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -261,6 +332,55 @@ public class Pesanan {
             System.exit(0);
         }
         return list_pesanan;
+    }
+    
+    public static List<Pesanan> cari(String cari){
+        KoneksiDatabase konek = new KoneksiDatabase();
+        List<Pesanan> list_pesanan = new ArrayList<Pesanan>();
+        try{
+            Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
+            Statement stt = kon.createStatement();
+            
+            String SQL = "SELECT * FROM pesanan";
+            ResultSet res = stt.executeQuery(SQL);
+            
+            while(res.next()){
+                list_pesanan.add(new Pesanan(res.getString(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5), res.getString(6)));
+            }
+            
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+        return list_pesanan;
+    }
+    
+    public void delete(){
+        if(status != null && (status).equalsIgnoreCase("selesai")){
+            JOptionPane.showMessageDialog(null, "Pesanan selesai, tidak dapat diubah", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        KoneksiDatabase konek = new KoneksiDatabase();
+        try{
+            Class.forName(konek.driver);
+            Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
+            Statement stt = kon.createStatement();
+            String SQL = "DELETE FROM menu_pesanan WHERE menu_pesanan.pesanan_id = "+id;
+            stt.execute(SQL);
+            SQL = "DELETE FROM pesanan WHERE pesanan.id = "+id;
+            stt.execute(SQL);
+            
+            JOptionPane.showMessageDialog(null,"Data berhasil dihapus", "Info", JOptionPane.ERROR_MESSAGE);
+            
+            stt.close();
+            kon.close();
+            
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }
     
     public List<Menu> list_menu(){
