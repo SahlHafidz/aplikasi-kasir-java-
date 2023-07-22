@@ -45,23 +45,23 @@ public class Menu {
     public void setJumlah(String jumlah) {
         this.jumlah = Long.parseLong(jumlah);
     }
-    public long getId() {
-        return id;
+    public String getId() {
+        return String.valueOf(id);
     }
     public String getNama() {
         return nama;
     }
-    public long getHarga() {
-        return harga;
+    public String getHarga() {
+        return String.valueOf(harga);
     }
-    public long getJumlah() {
-        return jumlah;
+    public String getJumlah() {
+        return String.valueOf(jumlah);
     }
     public String toString() {
-        return "ID: " + id + "\n" +
-               "Nama: " + nama + "\n" +
-               "Harga: " + harga + "\n" +
-               "Jumlah: " + jumlah;
+        if(jumlah > 0){
+            return id + ". " + nama + " | " + harga + " x " + jumlah;
+        }
+        return id + ". " + nama + " | " + harga;
     }
     
     public static Menu find(String id) {
@@ -125,9 +125,12 @@ public class Menu {
             Class.forName(konekdata.driver);
             Connection kon = DriverManager.getConnection(konekdata.database, konekdata.user, konekdata.password);
             Statement stt =  kon.createStatement();
-            String SQL = "UPDATE menu SET harga = "+harga+" WHERE nama = '"+nama+"';";
+            String SQL = "UPDATE menu SET nama = '"+nama+"', harga = "+harga+" WHERE id = "+id+";";
             stt.executeUpdate(SQL);
             
+            this.setNama(nama);
+            this.setHarga(harga);
+                    
             stt.close();
             kon.close();
             
@@ -189,7 +192,7 @@ public class Menu {
         }
         return ListMenu;
     }
-    public String[] toArray() {
+    public String[] toTableRow() {
         String data[] = new String[3];
         
         data[0] = String.valueOf(this.getId());

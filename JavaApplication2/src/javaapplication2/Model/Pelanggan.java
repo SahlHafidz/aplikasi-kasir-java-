@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import java.util.*;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Pelanggan {
     public String getNama(){
         return nama;
     }
-    public String getnomor_telp(){
+    public String getNomorTelp(){
         return nomor_telp;
     }
     public String getalamat(){
@@ -153,8 +154,24 @@ public class Pelanggan {
         }
         
     }
-//    public static List<Pelanggan> all(){
-//    }
+    public static List<Pelanggan> all(){
+        KoneksiDatabase konek = new KoneksiDatabase();
+        List<Pelanggan> list_pelanggan = new ArrayList<Pelanggan>();
+        try{
+            Class.forName(konek.driver);
+            Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
+            Statement stt = kon.createStatement();
+            String SQL = "SELECT * FROM pelanggan";
+            ResultSet res = stt.executeQuery(SQL);
+            while(res.next()){
+                list_pelanggan.add(new Pelanggan(res.getString(1), res.getString(2), res.getString(3), res.getString(4)));
+            }
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+        return list_pelanggan;
+    }
 //    public statif List<Pelanggan> cari(Stringcari){
 //    }
     
