@@ -7,7 +7,11 @@ import javaapplication2.Koneksi;
 
 /**
  *
+<<<<<<< HEAD
  * @author randy
+=======
+ * @author 62813
+>>>>>>> 941e7890dece48af7a8ccef86a2bf5b473c16677
  */
 public class KoneksiDatabase {
     Koneksi dbsetting;
