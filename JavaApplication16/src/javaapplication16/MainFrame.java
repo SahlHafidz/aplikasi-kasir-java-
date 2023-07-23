@@ -10,8 +10,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 import javax.swing.*;
 import java.sql.*;
+import java.util.*;
+import javaapplication16.Model.*;
+
 
 /**
  *
@@ -26,6 +30,8 @@ public class MainFrame extends javax.swing.JFrame {
     String driver, database, user, password, nama_menu,nomor_telp,alamat,nama;
     Long harga_menu, id_menu,id_pelanggan;
     Object table;
+    DefaultListModel listModel = new DefaultListModel<ListItemMenu>();
+    String pesanan_id;
     public MainFrame() {
         initComponents();
         dbsetting = new Koneksi();
@@ -36,9 +42,13 @@ public class MainFrame extends javax.swing.JFrame {
         settableload();
         MenuTable.setModel(MenuModel);
         
+        
         setTablePelangganLoad();
         PelangganTable.setModel(PelangganModel);
+
     }
+    
+
     private void updateMenuTable(){
         MenuModel = getMenuTableModel();
         settableload();
@@ -49,6 +59,100 @@ public class MainFrame extends javax.swing.JFrame {
         setTablePelangganLoad();
         PelangganTable.setModel(PelangganModel);
     }
+    private void updatePesananTable(){
+        PesananModel = getPesananTableModel();
+        setTablePesananLoad();
+        PesananTable.setModel(PesananModel);
+    }
+      private void loadComboBoxMenuPesanan(){
+        combo_box_menu_pesanan.removeAllItems();
+        String data[] = new String[3];
+        try{
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, password);
+            Statement stt =  kon.createStatement();
+            
+            String SQL = "SELECT * FROM menu";
+            ResultSet res = stt.executeQuery(SQL);
+            
+            DefaultComboBoxModel combo = new DefaultComboBoxModel<ComboItemMenu>();
+            
+            while(res.next()){
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                combo.addElement(new ComboItemMenu(data[0], data[1], data[2]));
+            }
+            
+            combo_box_menu_pesanan.setModel(combo);
+            
+            res.close();
+            stt.close();
+            kon.close();
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+                private void loadComboBoxPelangganPesanan(){
+        combo_box_pelanggan_pesanan.removeAllItems();
+        String data[] = new String[4];
+        String stat = "";
+        try{
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, password);
+            Statement stt =  kon.createStatement();
+            
+            String SQL = "SELECT * FROM pelanggan";
+            ResultSet res = stt.executeQuery(SQL);
+            DefaultComboBoxModel combo = new DefaultComboBoxModel<ComboItemPelanggan>();
+            while(res.next()){
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                combo.addElement(new ComboItemPelanggan(data[0], data[1], data[2]));
+            }
+            combo_box_pelanggan_pesanan.setModel(combo);
+            res.close();
+            stt.close();
+            kon.close();
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+    private void loadListMenuPesanan(){
+        list_menu_pesanan.removeAll();
+        String data[] = new String[3];
+        String stat = "";
+        try{
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, password);
+            Statement stt =  kon.createStatement();
+            
+            String SQL = "SELECT * FROM menu";
+            ResultSet res = stt.executeQuery(SQL);
+            DefaultListModel<ListItemMenu> list_menu_model = new  DefaultListModel<ListItemMenu>();
+        
+            while(res.next()){
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                list_menu_model.addElement(new ListItemMenu(data[0], data[1], data[2], "1"));
+            }
+            list_menu_pesanan.setModel(list_menu_model);
+            res.close();
+            stt.close();
+            kon.close();
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+    
     private int count(long row1, long row2, ResultSet res){
         int ct = 1;
         try{
@@ -160,7 +264,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void setPelangganTableCariLoad(String SQL){
                 String data[] = new String[4];
-        String stat = "";
+                String stat = "";
         try{
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, password);
@@ -223,6 +327,28 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        frame_tambah_pesanan = new javax.swing.JFrame();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        combo_box_pelanggan_pesanan = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        combo_box_menu_pesanan = new javax.swing.JComboBox<>();
+        text_field_qty_menu_pesanan = new javax.swing.JTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        list_menu_pesanan = new javax.swing.JList<>();
+        tambah_menu_pesanan = new javax.swing.JButton();
+        tombol_hapus_menu_pesanan = new javax.swing.JButton();
+        tombol_hapus_semua_menu_pesanan = new javax.swing.JButton();
+        tombol_simpan_menu_pesanan = new javax.swing.JButton();
+        frame_view_pesanan = new javax.swing.JFrame();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        text_field_pelanggan = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        list_menu_view_pesanan = new javax.swing.JList<>();
+        text_field_subtotal_pesanan = new javax.swing.JTextField();
+        tombol_tutup_view_pesanan = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
@@ -262,7 +388,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jButton8 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        PesananTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
@@ -270,6 +396,200 @@ public class MainFrame extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
+
+        frame_tambah_pesanan.setSize(new java.awt.Dimension(554, 327));
+        frame_tambah_pesanan.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                frame_tambah_pesananComponentShown(evt);
+            }
+        });
+
+        jPanel6.setBackground(new java.awt.Color(255, 236, 187));
+        jPanel6.setMinimumSize(new java.awt.Dimension(454, 341));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setText("TAMBAH PESANAN");
+
+        jLabel11.setText("Pelanggan");
+
+        combo_box_pelanggan_pesanan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel12.setText("Menu");
+
+        combo_box_menu_pesanan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        text_field_qty_menu_pesanan.setText("QTY");
+
+        list_menu_pesanan.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane5.setViewportView(list_menu_pesanan);
+
+        tambah_menu_pesanan.setText("Tambah");
+        tambah_menu_pesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tambah_menu_pesananMouseClicked(evt);
+            }
+        });
+
+        tombol_hapus_menu_pesanan.setText("Hapus");
+        tombol_hapus_menu_pesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tombol_hapus_menu_pesananMouseClicked(evt);
+            }
+        });
+
+        tombol_hapus_semua_menu_pesanan.setText("Hapus Semua");
+        tombol_hapus_semua_menu_pesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tombol_hapus_semua_menu_pesananMouseClicked(evt);
+            }
+        });
+
+        tombol_simpan_menu_pesanan.setText("Simpan");
+        tombol_simpan_menu_pesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tombol_simpan_menu_pesananMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(tambah_menu_pesanan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tombol_hapus_menu_pesanan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tombol_hapus_semua_menu_pesanan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tombol_simpan_menu_pesanan))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(combo_box_menu_pesanan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(text_field_qty_menu_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(combo_box_pelanggan_pesanan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11))
+                                .addGap(0, 29, Short.MAX_VALUE)))
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(combo_box_pelanggan_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(combo_box_menu_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(text_field_qty_menu_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tambah_menu_pesanan)
+                            .addComponent(tombol_hapus_menu_pesanan)
+                            .addComponent(tombol_hapus_semua_menu_pesanan))
+                        .addGap(55, 55, 55))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(tombol_simpan_menu_pesanan)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        javax.swing.GroupLayout frame_tambah_pesananLayout = new javax.swing.GroupLayout(frame_tambah_pesanan.getContentPane());
+        frame_tambah_pesanan.getContentPane().setLayout(frame_tambah_pesananLayout);
+        frame_tambah_pesananLayout.setHorizontalGroup(
+            frame_tambah_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frame_tambah_pesananLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        frame_tambah_pesananLayout.setVerticalGroup(
+            frame_tambah_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        frame_view_pesanan.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                frame_view_pesananComponentShown(evt);
+            }
+        });
+
+        jLabel9.setText("INFO PESANAN");
+
+        jLabel13.setText("Pelanggan");
+
+        list_menu_view_pesanan.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane4.setViewportView(list_menu_view_pesanan);
+
+        tombol_tutup_view_pesanan.setText("Tutup");
+
+        javax.swing.GroupLayout frame_view_pesananLayout = new javax.swing.GroupLayout(frame_view_pesanan.getContentPane());
+        frame_view_pesanan.getContentPane().setLayout(frame_view_pesananLayout);
+        frame_view_pesananLayout.setHorizontalGroup(
+            frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frame_view_pesananLayout.createSequentialGroup()
+                .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frame_view_pesananLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel13)
+                            .addComponent(text_field_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(text_field_subtotal_pesanan, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frame_view_pesananLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tombol_tutup_view_pesanan)))
+                .addContainerGap())
+        );
+        frame_view_pesananLayout.setVerticalGroup(
+            frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frame_view_pesananLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(frame_view_pesananLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(text_field_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(text_field_subtotal_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tombol_tutup_view_pesanan)
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -638,9 +958,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addGroup(panel_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panel_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nama_orang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nama_orang, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel_pelangganLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -684,7 +1004,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton8.setContentAreaFilled(false);
         jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        PesananTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -695,7 +1015,15 @@ public class MainFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        PesananTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PesananTableMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                PesananTableMousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(PesananTable);
 
         jLabel4.setText("NAMA");
 
@@ -704,6 +1032,11 @@ public class MainFrame extends javax.swing.JFrame {
         jButton9.setBackground(new java.awt.Color(255, 236, 187));
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaapplication16/assets/plus.png"))); // NOI18N
         jButton9.setText("TAMBAH");
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton9MouseClicked(evt);
+            }
+        });
 
         jButton10.setBackground(new java.awt.Color(255, 236, 187));
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaapplication16/assets/change.png"))); // NOI18N
@@ -749,7 +1082,7 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jTextField5))))))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -780,9 +1113,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -870,48 +1201,24 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nama = text_field_nama.getText();
         long harga = Long.parseLong(text_field_harga.getText());
+       
+        Menu menu = Menu.create(nama, String.valueOf(harga));
+        System.out.println(menu.toString());
         
-        try{
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database, user, password);
-            Statement stt =  kon.createStatement();
-            
-            String SQL = "INSERT INTO menu (nama, harga) VALUES('"+nama+"', "+harga+")";
-            stt.execute(SQL);
-            
-            updateMenuTable();
-            
-            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan", "Success", JOptionPane.INFORMATION_MESSAGE);
-        }
-        catch(Exception e){
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
+        updateMenuTable();
     }//GEN-LAST:event_Button_tambahMouseClicked
 
     private void EditmenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditmenuMouseClicked
         // TODO add your handling code here:
         String nama = text_field_nama.getText();
         long harga = Long.parseLong(text_field_harga.getText());
-        
-        try{
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database, user, password);
-            Statement stt =  kon.createStatement();
-            
-            String SQL = "UPDATE menu SET nama = '"+nama+"', harga = "+harga+" WHERE id = "+id_menu;
-            stt.execute(SQL);
+
+            Menu menu = Menu.find(String.valueOf(id_menu));
+            menu.update(nama, String.valueOf(harga));
             
             updateMenuTable();
             
             JOptionPane.showMessageDialog(null, "Data berhasil diubah", "Success", JOptionPane.INFORMATION_MESSAGE);
-        }
-        catch(Exception e){
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
     }//GEN-LAST:event_EditmenuMouseClicked
 
     private void MenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuTableMouseClicked
@@ -927,23 +1234,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
         // TODO add your handling code here:
-        try{
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database, user, password);
-            Statement stt =  kon.createStatement();
-            
-            String SQL = "DELETE FROM menu WHERE id = "+id_menu;
-            stt.execute(SQL);
-            
-            updateMenuTable();
-            
-            JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Success", JOptionPane.ERROR_MESSAGE);
-        }
-        catch(Exception e){
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
+        Menu menu = Menu.find(String.valueOf(id_menu));
+        menu.delete();
+        System.out.println(menu.toString());
+        updateMenuTable();
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton12MouseClicked
@@ -988,23 +1282,13 @@ public class MainFrame extends javax.swing.JFrame {
         String nomor = text_field_nomor.getText();
         String alamat =text_field_alamat.getText();
         
-        try{
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database, user, password);
-            Statement stt =  kon.createStatement();
-            
-            String SQL = "INSERT INTO pelanggan (nama,nomor_telp,alamat) VALUES('"+nama_org+"', '"+nomor+"','"+alamat+"')";
-            stt.execute(SQL);
-            
-            updatePelangganTable();
-            
-            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan", "Success", JOptionPane.INFORMATION_MESSAGE);
-        }
-        catch(Exception e){
-            System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
+
+
+//            Pelanggan pelanggan = Pelanggan.find(String.valueOf(id_pelanggan));
+            Pelanggan pelanggan = Pelanggan.create(nama_org, nomor,alamat);
+            System.out.println(pelanggan.toString());
+            updatePelangganTable();          
+            JOptionPane.showMessageDialog(null, "Data berhasil ditambah'", "Success", JOptionPane.INFORMATION_MESSAGE);
         
     }//GEN-LAST:event_jButton13MouseClicked
 
@@ -1084,26 +1368,146 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton15MouseClicked
         // TODO add your handling code here:
-            try{
+        Pelanggan pelanggan = Pelanggan.find(String.valueOf(id_pelanggan));
+        pelanggan.delete();
+        System.out.println(pelanggan.toString());
+        updatePelangganTable();
+        
+        
+    }//GEN-LAST:event_jButton15MouseClicked
+
+    private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
+        // TODO add your handling code here:
+        frame_tambah_pesanan.setVisible(true);
+    }//GEN-LAST:event_jButton9MouseClicked
+
+    private void PesananTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PesananTableMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_PesananTableMouseClicked
+
+    private void PesananTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PesananTableMousePressed
+        // TODO add your handling code here:
+                if(evt.getClickCount() == 2 && PesananTable.getSelectedRow() != -1){
+            frame_view_pesanan.setVisible(true);
+            String id = PesananTable.getModel().getValueAt(PesananTable.getSelectedRow(), 0).toString();
+            pesanan_id = id;
+            System.out.println("Pesanan ID " + pesanan_id);
+        }
+    }//GEN-LAST:event_PesananTableMousePressed
+
+    private void frame_tambah_pesananComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_frame_tambah_pesananComponentShown
+        // TODO add your handling code here:
+                loadComboBoxPelangganPesanan();
+        loadComboBoxMenuPesanan();
+        list_menu_pesanan.removeAll();
+        listModel = new DefaultListModel<ListItemMenu>();
+        list_menu_pesanan.setModel(listModel);
+    }//GEN-LAST:event_frame_tambah_pesananComponentShown
+
+    private void tambah_menu_pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tambah_menu_pesananMouseClicked
+        // TODO add your handling code here:
+        Object menu = combo_box_menu_pesanan.getSelectedItem();
+        String menu_id = ((ComboItemMenu)menu).getId();
+        String menu_nama = ((ComboItemMenu) menu).getNama();
+        String menu_harga = ((ComboItemMenu) menu).getHarga();
+        String menu_qty = text_field_qty_menu_pesanan.getText();
+        listModel.addElement(new ListItemMenu(menu_id, menu_nama, menu_harga, menu_qty));
+        list_menu_pesanan.setModel(listModel);
+    }//GEN-LAST:event_tambah_menu_pesananMouseClicked
+
+    private void tombol_hapus_menu_pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tombol_hapus_menu_pesananMouseClicked
+        // TODO add your handling code here:
+        DefaultListModel ListModel = (DefaultListModel) list_menu_pesanan.getModel();
+        if(list_menu_pesanan.getSelectedIndices().length > 0){
+            int[] selected_indexes = list_menu_pesanan.getSelectedIndices();
+            for (int index = selected_indexes.length-1; index >=0; index--) {
+                ListModel.removeElementAt(index);
+            }
+        }
+        list_menu_pesanan.setModel(ListModel);
+    }//GEN-LAST:event_tombol_hapus_menu_pesananMouseClicked
+
+    private void tombol_hapus_semua_menu_pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tombol_hapus_semua_menu_pesananMouseClicked
+        // TODO add your handling code here:
+        listModel = new DefaultListModel<ListItemMenu>();
+        list_menu_pesanan.setModel(listModel);
+    }//GEN-LAST:event_tombol_hapus_semua_menu_pesananMouseClicked
+
+    private void tombol_simpan_menu_pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tombol_simpan_menu_pesananMouseClicked
+        // TODO add your handling code here:
+                try{
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, password);
             Statement stt =  kon.createStatement();
             
-            String SQL = "DELETE FROM pelanggan WHERE id = "+id_pelanggan;
+            Object pelanggan = combo_box_pelanggan_pesanan.getSelectedItem();
+            String pelanggan_id = ((ComboItemPelanggan) pelanggan).getId();
+            
+            String SQL = "INSERT INTO pesanan (subtotal, pelanggan_id) VALUES(0, "+pelanggan_id+");";
             stt.execute(SQL);
+
+            SQL = "SELECT MAX(id) FROM pesanan";
+            ResultSet res = stt.executeQuery(SQL);
             
-            updatePelangganTable();
+            String pesanan_id = "";
+            long subtotal = 0;
+            while(res.next()){
+                pesanan_id = res.getString(1);
+            }
             
-            JOptionPane.showMessageDialog(null, "Data berhasil dihapus", "Success", JOptionPane.ERROR_MESSAGE);
+            for(int i = 0; i< list_menu_pesanan.getModel().getSize();i++){
+                Object item = list_menu_pesanan.getModel().getElementAt(i);
+                String menu_id = ((ListItemMenu) item).getId();
+                long harga = Long.parseLong(((ListItemMenu) item).getHarga());
+                long jumlah = Long.parseLong(((ListItemMenu) item).getjumlah());
+                for(int j = 0; j < jumlah; j++){
+                    SQL = "INSERT INTO menu_pesanan (menu_id, pesanan_id) VALUES("+menu_id+" , "+pesanan_id+" );";
+                    System.out.println(SQL);
+                    stt.execute(SQL);
+                    subtotal += harga * jumlah;
+                }
+            }
+            
+            SQL = "UPDATE pesanan SET subtotal = "+ String.valueOf(subtotal) + " WHERE id = "+pesanan_id;
+            stt.execute(SQL);
+            JOptionPane.showMessageDialog(null,"Data berhasil disimpan", "Info", JOptionPane.INFORMATION_MESSAGE);
+            
+            PesananModel = getPesananTableModel();
+            setTablePesananLoad();
+            PesananTable.setModel(PesananModel);
+            
+            frame_tambah_pesanan.setVisible(false);
+            
+            res.close();
+            stt.close();
+            kon.close();
         }
         catch(Exception e){
             System.err.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
         
+    }//GEN-LAST:event_tombol_simpan_menu_pesananMouseClicked
+
+    private void frame_view_pesananComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_frame_view_pesananComponentShown
+        // TODO add your handling code here:
+                Pesanan pesanan = Pesanan.find(pesanan_id);
+        List<Menu> list_menu = pesanan.list_menu();
+        Pelanggan pelanggan = pesanan.pelanggan();
         
-    }//GEN-LAST:event_jButton15MouseClicked
+        DefaultListModel<Menu> listModel = new DefaultListModel<Menu>();
+        
+        for(Menu menu: list_menu){
+            listModel.addElement(menu);
+        }
+        
+        text_field_subtotal_pesanan.setText(pesanan.getSubtotal());
+        text_field_pelanggan.setText(pelanggan.toString());
+        
+        list_menu_view_pesanan.setModel(listModel);
+    }//GEN-LAST:event_frame_view_pesananComponentShown
 
     
     
@@ -1177,6 +1581,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton Editmenu;
     private javax.swing.JTable MenuTable;
     private javax.swing.JTable PelangganTable;
+    private javax.swing.JTable PesananTable;
+    private javax.swing.JComboBox<String> combo_box_menu_pesanan;
+    private javax.swing.JComboBox<String> combo_box_pelanggan_pesanan;
+    private javax.swing.JFrame frame_tambah_pesanan;
+    private javax.swing.JFrame frame_view_pesanan;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1191,6 +1600,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1198,27 +1611,41 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JList<String> list_menu_pesanan;
+    private javax.swing.JList<String> list_menu_view_pesanan;
     private javax.swing.JTextField nama_orang;
     private javax.swing.JPanel panel_pelanggan;
+    private javax.swing.JButton tambah_menu_pesanan;
     private javax.swing.JTextField text_field_alamat;
     private javax.swing.JTextField text_field_cari;
     private javax.swing.JTextField text_field_cari_nama;
     private javax.swing.JTextField text_field_harga;
     private javax.swing.JTextField text_field_nama;
     private javax.swing.JTextField text_field_nomor;
+    private javax.swing.JTextField text_field_pelanggan;
+    private javax.swing.JTextField text_field_qty_menu_pesanan;
+    private javax.swing.JTextField text_field_subtotal_pesanan;
+    private javax.swing.JButton tombol_hapus_menu_pesanan;
+    private javax.swing.JButton tombol_hapus_semua_menu_pesanan;
+    private javax.swing.JButton tombol_simpan_menu_pesanan;
+    private javax.swing.JButton tombol_tutup_view_pesanan;
     // End of variables declaration//GEN-END:variables
-}
+    }
+
