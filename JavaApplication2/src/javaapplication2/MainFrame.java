@@ -173,11 +173,20 @@ public class MainFrame extends javax.swing.JFrame {
         frame_view_pesanan = new javax.swing.JFrame();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        list_menu_view_pesanan = new javax.swing.JList<>();
+        list_menu_info_pesanan = new javax.swing.JList<>();
         text_field_pelanggan = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         tombol_tutup_view_pesanan = new javax.swing.JButton();
-        text_field_subtotal_pesanan = new javax.swing.JTextField();
+        text_field_subtotal_info_pesanan = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        text_field_alamat_info_pesanan = new javax.swing.JTextField();
+        text_field_nomor_telp_info_pesanan = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        text_field_created_at_info_pesanan = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        text_field_updated_at_info_pesanan = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
         frame_ubah_pesanan = new javax.swing.JFrame();
         tombol_hapus_semua_menu_pesanan_edit = new javax.swing.JButton();
         combo_box_pelanggan_pesanan_edit = new javax.swing.JComboBox<>();
@@ -420,8 +429,9 @@ public class MainFrame extends javax.swing.JFrame {
     jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
     jLabel7.setText("Info Pesanan");
 
-    jScrollPane4.setViewportView(list_menu_view_pesanan);
+    jScrollPane4.setViewportView(list_menu_info_pesanan);
 
+    text_field_pelanggan.setEditable(false);
     text_field_pelanggan.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             text_field_pelangganActionPerformed(evt);
@@ -431,6 +441,31 @@ public class MainFrame extends javax.swing.JFrame {
     jLabel8.setText("Pelanggan");
 
     tombol_tutup_view_pesanan.setText("Tutup");
+
+    text_field_subtotal_info_pesanan.setEditable(false);
+    text_field_subtotal_info_pesanan.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            text_field_subtotal_info_pesananActionPerformed(evt);
+        }
+    });
+
+    jLabel16.setText("Nomor Telepon");
+
+    text_field_alamat_info_pesanan.setEditable(false);
+
+    text_field_nomor_telp_info_pesanan.setEditable(false);
+
+    jLabel17.setText("Alamat");
+
+    text_field_created_at_info_pesanan.setEditable(false);
+
+    jLabel18.setText("Total");
+
+    jLabel19.setText("Tanggal Pesan");
+
+    text_field_updated_at_info_pesanan.setEditable(false);
+
+    jLabel20.setText("Tanggal Selesai");
 
     javax.swing.GroupLayout frame_view_pesananLayout = new javax.swing.GroupLayout(frame_view_pesanan.getContentPane());
     frame_view_pesanan.getContentPane().setLayout(frame_view_pesananLayout);
@@ -442,38 +477,63 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(frame_view_pesananLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(tombol_tutup_view_pesanan))
-                .addGroup(frame_view_pesananLayout.createSequentialGroup()
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frame_view_pesananLayout.createSequentialGroup()
                     .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(text_field_pelanggan)
+                        .addComponent(text_field_alamat_info_pesanan, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(text_field_nomor_telp_info_pesanan, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16)
+                        .addComponent(jLabel17)
                         .addGroup(frame_view_pesananLayout.createSequentialGroup()
                             .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(text_field_pelanggan, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(frame_view_pesananLayout.createSequentialGroup()
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 0, Short.MAX_VALUE)))
-                            .addGap(27, 27, 27))
-                        .addGroup(frame_view_pesananLayout.createSequentialGroup()
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)))
-                    .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(text_field_subtotal_pesanan, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                                .addComponent(text_field_created_at_info_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel19))
+                            .addGap(18, 18, 18)
+                            .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel20)
+                                .addComponent(text_field_updated_at_info_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel18)
+                        .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(text_field_subtotal_info_pesanan, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))))
             .addContainerGap())
     );
     frame_view_pesananLayout.setVerticalGroup(
         frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(frame_view_pesananLayout.createSequentialGroup()
             .addGap(20, 20, 20)
-            .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addGroup(frame_view_pesananLayout.createSequentialGroup()
                     .addComponent(jLabel7)
-                    .addGap(49, 49, 49)
+                    .addGap(18, 18, 18)
                     .addComponent(jLabel8)
-                    .addGap(8, 8, 8)
-                    .addComponent(text_field_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(text_field_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(text_field_nomor_telp_info_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel17)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(text_field_alamat_info_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(2, 2, 2))
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(18, 18, Short.MAX_VALUE)
-            .addComponent(text_field_subtotal_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
+            .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel18)
+                .addComponent(jLabel19)
+                .addComponent(jLabel20))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(frame_view_pesananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(text_field_subtotal_info_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(text_field_created_at_info_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(text_field_updated_at_info_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
             .addComponent(tombol_tutup_view_pesanan)
             .addGap(20, 20, 20))
     );
@@ -1226,10 +1286,14 @@ public class MainFrame extends javax.swing.JFrame {
             listModel.addElement(menu);
         }
         
-        text_field_subtotal_pesanan.setText(pesanan.getSubtotal());
-        text_field_pelanggan.setText(pelanggan.toString());
+        text_field_subtotal_info_pesanan.setText(pesanan.getSubtotal());
+        text_field_pelanggan.setText(pelanggan.getNama());
+        text_field_nomor_telp_info_pesanan.setText(pelanggan.getNomorTelp());
+        text_field_alamat_info_pesanan.setText(pelanggan.getalamat());
+        text_field_created_at_info_pesanan.setText(pesanan.getCreatedAt());
+        text_field_updated_at_info_pesanan.setText(pesanan.getUpdatedAt());
         
-        list_menu_view_pesanan.setModel(listModel);
+        list_menu_info_pesanan.setModel(listModel);
     }//GEN-LAST:event_frame_view_pesananComponentShown
 
     private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
@@ -1395,6 +1459,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
         PesananTable.setModel(PesananModel);
     }//GEN-LAST:event_tombol_cari_pesananMouseClicked
+
+    private void text_field_subtotal_info_pesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_field_subtotal_info_pesananActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_field_subtotal_info_pesananActionPerformed
         
     /**
      * @param args the command line arguments
@@ -1492,7 +1560,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1506,18 +1579,22 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JList<Menu> list_menu_info_pesanan;
     private javax.swing.JList<Menu> list_menu_pesanan;
     private javax.swing.JList<Menu> list_menu_pesanan_edit;
-    private javax.swing.JList<Menu> list_menu_view_pesanan;
     private javax.swing.JButton tambah_menu_pesanan;
+    private javax.swing.JTextField text_field_alamat_info_pesanan;
     private javax.swing.JTextField text_field_cari;
     private javax.swing.JTextField text_field_cari_pesanan;
+    private javax.swing.JTextField text_field_created_at_info_pesanan;
     private javax.swing.JTextField text_field_harga;
     private javax.swing.JTextField text_field_jumlah_menu_pesanan_edit;
     private javax.swing.JTextField text_field_nama;
+    private javax.swing.JTextField text_field_nomor_telp_info_pesanan;
     private javax.swing.JTextField text_field_pelanggan;
     private javax.swing.JTextField text_field_qty_menu_pesanan;
-    private javax.swing.JTextField text_field_subtotal_pesanan;
+    private javax.swing.JTextField text_field_subtotal_info_pesanan;
+    private javax.swing.JTextField text_field_updated_at_info_pesanan;
     private javax.swing.JButton tombol_cari_pesanan;
     private javax.swing.JButton tombol_hapus_menu_pesanan;
     private javax.swing.JButton tombol_hapus_menu_pesanan_edit;

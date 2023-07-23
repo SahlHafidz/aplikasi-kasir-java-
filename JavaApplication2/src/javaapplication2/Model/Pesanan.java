@@ -88,7 +88,7 @@ public class Pesanan {
         this.updated_at = localDate;
     }
     
-    public String getUpdateddAt(){
+    public String getUpdatedAt(){
         return this.updated_at.toString();
     }
     
@@ -114,7 +114,7 @@ public class Pesanan {
         data[6] = pelanggan.getalamat();
         data[7] = this.getStatus();
         data[8] = this.getCreatedAt();
-        data[9] = this.getUpdateddAt();
+        data[9] = this.getUpdatedAt();
         return data;
     }
     
