@@ -103,7 +103,7 @@ public class Pesanan {
     }
     
     public String[] toTableRow(){
-        String data[] = new String[9];
+        String data[] = new String[10];
         Pelanggan pelanggan = this.pelanggan();
         data[0] = this.getId();
         data[1] = pelanggan.getNama();
@@ -111,9 +111,10 @@ public class Pesanan {
         data[3] = this.getRingkasanMenu();
         data[4] = String.valueOf(this.getJumlahMenu());
         data[5] = this.getSubtotal();
-        data[6] = this.getStatus();
-        data[7] = this.getCreatedAt();
-        data[8] = this.getUpdateddAt();
+        data[6] = pelanggan.getalamat();
+        data[7] = this.getStatus();
+        data[8] = this.getCreatedAt();
+        data[9] = this.getUpdateddAt();
         return data;
     }
     
@@ -290,7 +291,7 @@ public class Pesanan {
     }
     
     public void update(String status){
-        if(status != null && (status).equalsIgnoreCase("selesai")){
+        if(this.status != null && (this.status).equalsIgnoreCase("selesai")){
             JOptionPane.showMessageDialog(null, "Pesanan selesai, tidak dapat diubah", "Info", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -341,7 +342,21 @@ public class Pesanan {
             Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
             Statement stt = kon.createStatement();
             
-            String SQL = "SELECT * FROM pesanan";
+            String SQL = "SELECT pesanan.id, pesanan.subtotal, pesanan.pelanggan_id, pesanan.created_at, pesanan.updated_at, pesanan.status\n" +
+                    "FROM menu_pesanan " +
+                    "JOIN pesanan " +
+                    "JOIN menu ON menu.id = menu_pesanan.menu_id " +
+                    "JOIN pelanggan ON pelanggan.id = pesanan.pelanggan_id " +
+                    "WHERE (pelanggan.nama LIKE '%"+cari+"%' OR "
+                    + "pelanggan.nomor_telp LIKE '%"+cari+"%' OR "
+                    + "pelanggan.alamat LIKE '%"+cari+"%' OR "
+                    + "menu.nama LIKE '%"+cari+"%' OR "
+                    + "pesanan.id LIKE '%"+cari+"%' OR "
+                    + "pesanan.subtotal LIKE '%"+cari+"%' OR "
+                    + "pesanan.status LIKE '%"+cari+"%' OR "
+                    + "pesanan.created_at LIKE '%"+cari+"%' OR "
+                    + "pesanan.updated_at LIKE '%"+cari+"%') " +
+                    "GROUP BY pesanan.id ";
             ResultSet res = stt.executeQuery(SQL);
             
             while(res.next()){

@@ -219,7 +219,7 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         PesananTable = new javax.swing.JTable();
         text_field_cari_pesanan = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        tombol_cari_pesanan = new javax.swing.JButton();
         tombol_show_frame_tambah_pesanan = new javax.swing.JButton();
         tombol_ubah_pesanan = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -881,10 +881,15 @@ public class MainFrame extends javax.swing.JFrame {
 
     text_field_cari_pesanan.setText("Cari pesanan");
 
-    jButton4.setText("Cari");
-    jButton4.addActionListener(new java.awt.event.ActionListener() {
+    tombol_cari_pesanan.setText("Cari");
+    tombol_cari_pesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            tombol_cari_pesananMouseClicked(evt);
+        }
+    });
+    tombol_cari_pesanan.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton4ActionPerformed(evt);
+            tombol_cari_pesananActionPerformed(evt);
         }
     });
 
@@ -950,7 +955,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(PesananPanelLayout.createSequentialGroup()
                     .addComponent(text_field_cari_pesanan)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jButton4)))
+                    .addComponent(tombol_cari_pesanan)))
             .addContainerGap())
     );
     PesananPanelLayout.setVerticalGroup(
@@ -959,7 +964,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGap(11, 11, 11)
             .addGroup(PesananPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(text_field_cari_pesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton4))
+                .addComponent(tombol_cari_pesanan))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1235,9 +1240,9 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tombol_status_pesananActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void tombol_cari_pesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tombol_cari_pesananActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_tombol_cari_pesananActionPerformed
 
     private void tombol_ubah_pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tombol_ubah_pesananMouseClicked
         // TODO add your handling code here:
@@ -1267,7 +1272,9 @@ public class MainFrame extends javax.swing.JFrame {
         for(Pelanggan pel: list_pelanggan){
             combo.addElement(pel);
         }
+        combo.setSelectedItem(pelanggan);
         combo_box_pelanggan_pesanan_edit.setModel(combo);
+        
 
         DefaultComboBoxModel comboMenu = new DefaultComboBoxModel<Menu>();
         for(Menu me: list_menu){
@@ -1377,6 +1384,17 @@ public class MainFrame extends javax.swing.JFrame {
             updatePesananTable();
         }
     }//GEN-LAST:event_jButton8MouseClicked
+
+    private void tombol_cari_pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tombol_cari_pesananMouseClicked
+        // TODO add your handling code here:
+        String cari = text_field_cari_pesanan.getText();
+        List<Pesanan> list_pesanan = Pesanan.cari(cari);
+        PesananModel = getPesananTableModel();
+        for(Pesanan pesanan: list_pesanan){
+            PesananModel.addRow(pesanan.toTableRow());
+        }
+        PesananTable.setModel(PesananModel);
+    }//GEN-LAST:event_tombol_cari_pesananMouseClicked
         
     /**
      * @param args the command line arguments
@@ -1435,8 +1453,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     private javax.swing.table.DefaultTableModel PesananModel = getPesananTableModel();
     private javax.swing.table.DefaultTableModel getPesananTableModel(){
-        return new javax.swing.table.DefaultTableModel(new Object [][] {}, new String [] {"ID", "Pelanggan", "Nomor Telepon", "Menu", "Jumlah", "Total", "Status", "Tanggal Pesan", "Tanggal Selesai"}){
-            boolean[] canEdit = new boolean[]{false, false, false, false, false, false, false, false, false};
+        return new javax.swing.table.DefaultTableModel(new Object [][] {}, new String [] {"ID", "Pelanggan", "Nomor Telepon", "Menu", "Jumlah", "Total", "Alamat", "Status", "Tanggal Pesan", "Tanggal Selesai"}){
+            boolean[] canEdit = new boolean[]{false, false, false, false, false, false, false, false, false, false};
             public boolean isCellEditable(int rowIndex, int columnIndex){
                 return canEdit[columnIndex];
             }
@@ -1465,7 +1483,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
@@ -1501,6 +1518,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField text_field_pelanggan;
     private javax.swing.JTextField text_field_qty_menu_pesanan;
     private javax.swing.JTextField text_field_subtotal_pesanan;
+    private javax.swing.JButton tombol_cari_pesanan;
     private javax.swing.JButton tombol_hapus_menu_pesanan;
     private javax.swing.JButton tombol_hapus_menu_pesanan_edit;
     private javax.swing.JButton tombol_hapus_semua_menu_pesanan;

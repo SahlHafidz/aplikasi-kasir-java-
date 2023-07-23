@@ -63,7 +63,7 @@ public class Pelanggan {
     }
     public static Pelanggan find(String id) {
         KoneksiDatabase konek = new KoneksiDatabase();
-        Pelanggan Pelanggan = new Pelanggan();
+        Pelanggan pelanggan = new Pelanggan();
         try{
             Class.forName(konek.driver);
             Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
@@ -71,10 +71,10 @@ public class Pelanggan {
             String SQL = "SELECT * FROM pelanggan WHERE id = "+id;
             ResultSet res = stt.executeQuery(SQL);
             while(res.next()){
-                Pelanggan.setId (res.getString(1));
-                Pelanggan.setNama(res.getString(2));
-                Pelanggan.setNomorTelp(res.getString(3));
-                Pelanggan.setAlamat(res.getString(4));
+                pelanggan.setId (res.getString(1));
+                pelanggan.setNama(res.getString(2));
+                pelanggan.setNomorTelp(res.getString(3));
+                pelanggan.setAlamat(res.getString(4));
             }
             res.close();
             stt.close();
@@ -84,11 +84,11 @@ public class Pelanggan {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
-        return Pelanggan;
+        return pelanggan;
     }
     public static Pelanggan create(String nama, String nomor_telp, String alamat) {
         KoneksiDatabase konek = new KoneksiDatabase();
-        Pelanggan Pelanggan = new Pelanggan();
+        Pelanggan pelanggan = new Pelanggan();
         try{
             Class.forName(konek.driver);
             Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
@@ -98,10 +98,10 @@ public class Pelanggan {
             SQL = "SELECT * FROM `pelanggan` WHERE id = (SELECT MAX(pelanggan.id) FROM pelanggan);";
             ResultSet res = stt.executeQuery(SQL);
             while(res.next()){
-                Pelanggan.setId(res.getString(1));
-                Pelanggan.setNama(res.getString(2));
-                Pelanggan.setNomorTelp(res.getString(3));
-                Pelanggan.setAlamat(res.getString(4));
+                pelanggan.setId(res.getString(1));
+                pelanggan.setNama(res.getString(2));
+                pelanggan.setNomorTelp(res.getString(3));
+                pelanggan.setAlamat(res.getString(4));
             }
             res.close();
             stt.close();
@@ -114,7 +114,7 @@ public class Pelanggan {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
-        return Pelanggan;
+        return pelanggan;
 
     }
     public void update(String nama, String nomor_telp, String alamat){ 
@@ -139,7 +139,6 @@ public class Pelanggan {
     }
     public void delete(){
         KoneksiDatabase konek = new KoneksiDatabase();
-        Pelanggan pelanggan = new Pelanggan();
         try{
             Class.forName(konek.driver);
             Connection kon = DriverManager.getConnection(konek.database, konek.user, konek.password);
